@@ -50,11 +50,11 @@ install: all
 	    ./backup_existing.sh ; \
 	fi;
 
-	find /lib/modules/$(shell uname -r) -name "r8192se_*.ko" -exec rm {} \;
-	find /lib/modules/$(shell uname -r) -name "r8192ce_*.ko" -exec rm {} \;
-	find /lib/modules/$(shell uname -r) -name "r8192cu_*.ko" -exec rm {} \;
-	find /lib/modules/$(shell uname -r) -name "r8723e_*.ko" -exec rm {} \;
-	find /lib/modules/$(shell uname -r) -name "r8188ee_*.ko" -exec rm {} \;
+	find /lib/modules/$(shell uname -r) -name "r8192se_*.ko.xz" -exec rm {} \;
+	find /lib/modules/$(shell uname -r) -name "r8192ce_*.ko.xz" -exec rm {} \;
+	find /lib/modules/$(shell uname -r) -name "r8192cu_*.ko.xz" -exec rm {} \;
+	find /lib/modules/$(shell uname -r) -name "r8723e_*.ko.xz" -exec rm {} \;
+	find /lib/modules/$(shell uname -r) -name "r8188ee_*.ko.xz" -exec rm {} \;
 	@rm -fr $(FIRMWAREDIR)/`uname -r`/rtlwifi
 
 	$(shell rm -fr $(MODDESTDIR))
@@ -65,13 +65,20 @@ install: all
 	$(shell mkdir $(MODDESTDIR)/rtl8192cu)
 	$(shell mkdir $(MODDESTDIR)/rtl8192de)
 	$(shell mkdir $(MODDESTDIR)/rtl8188ee)
-	@install -p -m 644 rtlwifi.ko $(MODDESTDIR)	
-	@install -p -m 644 ./rtl8192c/rtl8192c_common.ko $(MODDESTDIR)/rtl8192c
-	@install -p -m 644 ./rtl8192se/rtl8192se.ko $(MODDESTDIR)/rtl8192se
-	@install -p -m 644 ./rtl8192ce/rtl8192ce.ko $(MODDESTDIR)/rtl8192ce
-	@install -p -m 644 ./rtl8192cu/rtl8192cu.ko $(MODDESTDIR)/rtl8192cu
-	@install -p -m 644 ./rtl8192de/rtl8192de.ko $(MODDESTDIR)/rtl8192de
-	@install -p -m 644 ./rtl8188ee/rtl8188ee.ko $(MODDESTDIR)/rtl8188ee
+	xz rtlwifi.ko
+	xz ./rtl8192c/rtl8192c_common.ko
+	xz ./rtl8192se/rtl8192se.ko
+	xz ./rtl8192ce/rtl8192ce.ko
+	xz ./rtl8192cu/rtl8192cu.ko
+	xz ./rtl8192de/rtl8192de.ko
+	xz ./rtl8188ee/rtl8188ee.ko
+	@install -p -m 644 rtlwifi.ko.xz $(MODDESTDIR)	
+	@install -p -m 644 ./rtl8192c/rtl8192c_common.ko.xz $(MODDESTDIR)/rtl8192c
+	@install -p -m 644 ./rtl8192se/rtl8192se.ko.xz $(MODDESTDIR)/rtl8192se
+	@install -p -m 644 ./rtl8192ce/rtl8192ce.ko.xz $(MODDESTDIR)/rtl8192ce
+	@install -p -m 644 ./rtl8192cu/rtl8192cu.ko.xz $(MODDESTDIR)/rtl8192cu
+	@install -p -m 644 ./rtl8192de/rtl8192de.ko.xz $(MODDESTDIR)/rtl8192de
+	@install -p -m 644 ./rtl8188ee/rtl8188ee.ko.xz $(MODDESTDIR)/rtl8188ee
 	
 	@depmod -a
 
@@ -101,7 +108,7 @@ uninstall:
 
 
 clean:
-	rm -fr *.mod.c *.mod *.o .*.cmd *.ko *~
+	rm -fr *.mod.c *.mod *.o .*.cmd *.ko *.ko.xz *~
 	rm -fr .tmp_versions
 	rm -fr Modules.symvers
 	rm -fr Module.symvers
